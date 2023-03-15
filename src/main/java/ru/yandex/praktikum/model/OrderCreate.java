@@ -1,6 +1,7 @@
 package ru.yandex.praktikum.model;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class OrderCreate {
     private String firstName;
@@ -11,9 +12,9 @@ public class OrderCreate {
     private String rentTime;
     private String deliveryDate;
     private String comment;
-    private String[] color;
+    private List<String> color;
 
-    public OrderCreate(String firstName, String lastName, String address, String metroStation, String phone, String rentTime, String deliveryDate, String comment, String[] color) {
+    public OrderCreate(String firstName, String lastName, String address, String metroStation, String phone, String rentTime, String deliveryDate, String comment, List<String> color) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -89,15 +90,15 @@ public class OrderCreate {
         this.comment = comment;
     }
 
-    public String[] getColor() {
+    public List<String> getColor() {
         return color;
     }
 
-    public void setColor(String[] color) {
+    public void setColor(List<String> color) {
         this.color = color;
     }
 
-    public OrderCreate (String[] color) {
+    public OrderCreate (List<String> color) {
         this.firstName = "Naruto";
         this.lastName = "Uzumaki";
         this.address = "Konoha, 142 apt.";
@@ -119,7 +120,7 @@ public class OrderCreate {
                 ", rentTime='" + rentTime + '\'' +
                 ", deliveryDate='" + deliveryDate + '\'' +
                 ", comment='" + comment + '\'' +
-                ", color='" + Arrays.toString(color) + '\'' +
+                ", color='" + color + '\'' +
                 '}';
     }
 }
