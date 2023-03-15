@@ -111,6 +111,6 @@ public class CourierAPITest {
                 .statusCode(SC_CONFLICT)
                 .and()
                 .assertThat()
-                .body("message", equalTo("Этот логин уже используется. Попробуйте другой."));
+                .body("message", equalTo("Этот логин уже используется."));
     }
 }
