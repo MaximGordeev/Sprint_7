@@ -1,6 +1,6 @@
 # Sprint_7
 
-## Использую Maven, JUnit4, Rest-Assured, Allure
+## Использую JAVA 11, Maven, JUnit4, Rest-Assured, Allure
 
 ### Тестирую ручки  
 **https://qa-scooter.praktikum-services.ru/docs/**
