@@ -5,6 +5,7 @@ import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -19,6 +20,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class CourierAPITest {
     private CourierClient courierClient;
+    private Courier courier;
     private int courierId;
 
     @BeforeClass
@@ -32,32 +34,33 @@ public class CourierAPITest {
     @Before
     public void setUp() {
         courierClient = new CourierClient();
+        courier = CourierGenerator.getRandom();
     }
 
     @After
     public void clearData() {
-        if(courierId != 0) courierClient.delete(courierId);
+        if (!courier.getLogin().equals("") & !courier.getPassword().equals("")) {
+            courierId = courierClient.login(CourierCredentials.from(courier))
+                    .extract().path("id");
+            if (courierId != 0) courierClient.delete(courierId);
+        }
     }
 
     @Test
     @DisplayName("Create new courier")
     public void courierCanBeCreateWithValidData() {
-        Courier courier = CourierGenerator.getRandom();
         courierClient.create(courier)
                 .assertThat()
                 .statusCode(SC_CREATED)
                 .and()
                 .assertThat()
                 .body("ok", is(true));
-        courierId = courierClient.login(CourierCredentials.from(courier))
-                .assertThat()
-                .body("id", notNullValue())
-                .extract().path("id");
+
     }
+
     @Test
     @DisplayName("Create new courier without login")
     public void courierCanNotBeCreatedWithoutLogin() {
-        Courier courier = CourierGenerator.getRandom();
         courier.setLogin("");
         courierClient.create(courier)
                 .assertThat()
@@ -70,7 +73,6 @@ public class CourierAPITest {
     @Test
     @DisplayName("Create new courier without password")
     public void courierCanNotBeCreatedWithoutPassword() {
-        Courier courier = CourierGenerator.getRandom();
         courier.setPassword("");
         courierClient.create(courier)
                 .assertThat()
@@ -83,7 +85,8 @@ public class CourierAPITest {
     @Test
     @DisplayName("Create new courier without login and password")
     public void courierCanNotBeCreatedWithoutLoginAndPassword() {
-        Courier courier = new Courier("", "", "Naruto");
+        courier.setLogin("");
+        courier.setPassword("");
         courierClient.create(courier)
                 .assertThat()
                 .statusCode(SC_BAD_REQUEST)
@@ -95,7 +98,6 @@ public class CourierAPITest {
     @Test
     @DisplayName("Create new courier with existing data")
     public void courierCanNotBeCreatedWithExistingData() {
-        Courier courier = CourierGenerator.getRandom();
         courierClient.create(courier)
                 .assertThat()
                 .statusCode(SC_CREATED)
