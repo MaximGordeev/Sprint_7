@@ -2,6 +2,9 @@
 
 ## Использую JAVA 11, Maven, JUnit4, Rest-Assured, Allure
 
+### Для запуска : mvn clean test 
+### Для запуска Allure : allure serve target/surefire-reports/ 
+
 ### Тестирую ручки  
 **https://qa-scooter.praktikum-services.ru/docs/**
 
